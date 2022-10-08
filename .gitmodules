@@ -1,6 +1,0 @@
-[submodule "src/store"]
-	path = src/store
-	url = https://github.com/essar05/student-manager-store.git
-[submodule "src/shared/store"]
-	path = src/shared/store
-	url = https://github.com/essar05/student-manager-store.git
