@@ -12,16 +12,16 @@ import {
   Card,
 } from 'reactstrap'
 import ContentWrapper from '../../components/Layout/ContentWrapper'
-import { useClassStore } from '../../stores/classStore'
+import { useStore } from "../../shared/hooks/useStore"
 
 interface ClassListProps {
 }
 
 export const ClassList = (props: ClassListProps) => {
-  const classes = useClassStore(state => state.classes)
-  const fetch = useClassStore(state => state.fetch)
-  const isInitialized = useClassStore(state => state.isInitialized)
-  const isLoading = useClassStore(state => state.isLoading)
+  const classes = useStore(state => state.classes)
+  const fetch = useStore(state => state.fetch)
+  const isInitialized = useStore(state => state.isInitialized)
+  const isLoading = useStore(state => state.isLoading)
 
   useEffect(() => {
     if (!isInitialized) {
