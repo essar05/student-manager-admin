@@ -83,8 +83,6 @@ const Routes = ({ location }: RouteProps) => {
     }
   }, [updateToken, isAuthenticated, logout])
 
-  console.log('isAuthenticated', isAuthenticated)
-
   if (isAuthenticated === undefined) {
     return null
   }
