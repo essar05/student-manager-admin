@@ -15,7 +15,7 @@ export interface CardToolProps {
     /** show the remove icon */
     dismiss: boolean;
     /** name if the icon class to use as spinner */
-    spinner: String;
+    spinner: string;
     onRemove: CardToolOnRemove;
     onRemoved: CardToolOnRemoved;
     onRefresh: CardToolOnRefresh;
@@ -42,7 +42,7 @@ class CardTool extends Component<CardToolProps> {
      * ascending .card element
      */
     getCardParent(item: HTMLDivElement | null) {
-        var el = item && item.parentElement;
+        let el = item && item.parentElement;
         while (el && !el.classList.contains('card')) el = el.parentElement;
         return el;
     }

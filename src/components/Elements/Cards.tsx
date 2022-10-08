@@ -44,7 +44,7 @@ class Cards extends Component {
 
   /* id is the index in the accordionState array */
   toggleAccordion = (id: number) => {
-    let accordionState = this.state.accordionState.map((val, i) => {
+    const accordionState = this.state.accordionState.map((val, i) => {
       return id === i ? !val : (this.state.oneAtATime ? false : val)
     })
     this.setState({

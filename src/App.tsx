@@ -21,7 +21,7 @@ import "./Vendor";
 import './styles/bootstrap.scss';
 import './styles/app.scss'
 
-declare var PUBLIC_URL: string;
+declare const PUBLIC_URL: string;
 
 class App extends Component {
   render() {

@@ -40,6 +40,11 @@ const search = lazy(() => import('./componentsJS/Extras/Search'))
 const settings = lazy(() => import('./componentsJS/Extras/Settings'))
 const teamviewer = lazy(() => import('./componentsJS/Extras/TeamViewer'))
 const votelinks = lazy(() => import('./componentsJS/Extras/VoteLinks'))
+const formcropper = lazy(() => import('./componentsJS/Forms/FormCropper'))
+const formupload = lazy(() => import('./componentsJS/Forms/FormUpload'))
+const formvalidation = lazy(() => import('./componentsJS/Forms/FormValidation'))
+const formwizard = lazy(() => import('./componentsJS/Forms/FormWizard'))
+const formwizardvertical = lazy(() => import('./componentsJS/Forms/FormWizard.Vertical'))
 
 // List of routes that uses the page layout
 // listed here to Switch between layouts
@@ -59,10 +64,6 @@ const Routes = ({ location }: RouteProps) => {
   //      'rag-fadeInLeft'
 
   const animationName = 'rag-fadeIn'
-
-  console.log(listofPages)
-  console.log(location!.pathname)
-  console.log(listofPages.indexOf(location!.pathname) > -1)
 
   if (listofPages.indexOf(location!.pathname) > -1) {
     return (
@@ -85,8 +86,6 @@ const Routes = ({ location }: RouteProps) => {
             <div>
               <Suspense fallback={<PageLoader/>}>
                 <Switch location={location}>
-                  <Redirect to={'/classes'} from={'/'} exact/>
-
                   <Route path="/classes" component={waitFor(ClassList)}/>
 
                   <Route path="/welcome" component={waitFor(Welcome)}/>
@@ -116,8 +115,13 @@ const Routes = ({ location }: RouteProps) => {
                   <Route path="/teamviewer" component={waitFor(teamviewer)}/>
                   <Route path="/votelinks" component={waitFor(votelinks)}/>
 
+                  <Route path="/formcropper" component={waitFor(formcropper)}/>
+                  <Route path="/formupload" component={waitFor(formupload)}/>
+                  <Route path="/formvalidation" component={waitFor(formvalidation)}/>
+                  <Route path="/formwizard" component={waitFor(formwizard)}/>
+                  <Route path="/formwizardvertical" component={waitFor(formwizardvertical)}/>
 
-                  <Redirect to="/welcome"/>
+                  <Redirect to="/classes"/>
                 </Switch>
               </Suspense>
             </div>

@@ -21,7 +21,7 @@ const SidebarItemHeader = ({ item }: SidebarItemHeaderProps) => (
 
 export interface SidebarItemProps {
   item: ISidebarMenuItem
-  isActive: Boolean
+  isActive: boolean
 }
 
 /** Normal items for the sidebar */
@@ -107,7 +107,7 @@ class Sidebar extends Component<SidebarProps> {
 
   /** prepare initial state of collapse menus. Doesnt allow same route names */
   buildCollapseList = () => {
-    let collapse = {} as StringBoolArray
+    const collapse = {} as StringBoolArray
     Menu.filter(({ heading }) => !heading).forEach(({ name, path, submenu }) => {
       if (name) collapse[name] = this.routeActive(submenu ? submenu.map(({ path }) => path) : path)
     })
@@ -127,7 +127,7 @@ class Sidebar extends Component<SidebarProps> {
 
   toggleItemCollapse(stateName: string) {
     const { collapse } = this.state
-    for (let c in collapse) {
+    for (const c in collapse) {
       if (collapse[c] === true && c !== stateName)
         this.setState({
           collapse: {
