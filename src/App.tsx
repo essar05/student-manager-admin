@@ -20,6 +20,7 @@ import "./Vendor";
 // Application Styles
 import './styles/bootstrap.scss';
 import './styles/app.scss'
+import { useStore } from "./shared/hooks/useStore"
 
 declare const PUBLIC_URL: string;
 
