@@ -4,6 +4,7 @@ export interface ISidebarMenuItem {
   icon?: string
   translate?: string
   path?: string
+  visible?: boolean
   label?: {
     value: string | number
     color: string
@@ -24,6 +25,7 @@ const Menu: ISidebarMenu = [
     name: 'Debug',
     icon: 'icon-speedometer',
     label: { value: 4, color: 'info' },
+    visible: false,
     submenu: [
       {
         name: 'Welcome',

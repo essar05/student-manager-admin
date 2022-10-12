@@ -191,6 +191,7 @@ export const ClassList = withRouter(
 
                   <Button
                     size={'sm'}
+                    type={"btn-primary"}
                     disabled={!addClassForm.schoolYear || !addClassForm.schoolId || !addClassForm.label}
                     onClick={handleAddClass}
                   >

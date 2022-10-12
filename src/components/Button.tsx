@@ -20,7 +20,7 @@ export const Button = memo(
       <button
         type="button"
         disabled={disabled}
-        className={classNames('btn', `btn-${size}`, { 'btn-labeled': !!icon }, disabled ? 'btn-' : type, className)}
+        className={classNames('btn', `btn-${size}`, { 'btn-labeled': !!icon }, type, className)}
         onClick={onClick}
       >
         {icon && (

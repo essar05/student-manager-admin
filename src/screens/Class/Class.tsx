@@ -163,7 +163,7 @@ export const Class = withRouter(
                     />
                   </div>
 
-                  <Button size={'sm'} onClick={handleAddStudent}>
+                  <Button size={'sm'} type={"btn-primary"} disabled={!addStudentForm.firstName || !addStudentForm.lastName} onClick={handleAddStudent}>
                     Adauga elev
                   </Button>
                 </form>

@@ -168,7 +168,7 @@ class Sidebar extends Component<SidebarProps> {
               {/* END user info */}
 
               {/* Iterates over all sidebar items */}
-              {Menu.map((item, i) => {
+              {Menu.filter(i => i.visible || i.visible === undefined).map((item, i) => {
                 // heading
                 if (this.itemType(item) === 'heading') return <SidebarItemHeader item={item} key={i} />
                 else {
