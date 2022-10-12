@@ -8,16 +8,16 @@ import PageLoader from './components/Common/PageLoader'
 import Base from './components/Layout/Base'
 import BasePage from './components/Layout/BasePage'
 import { useStore } from './shared/hooks/useStore'
-import { setAuthToken } from './shared/auth'
-// import BaseHorizontal from './components/Layout/BaseHorizontal';
 
 /* Used to render a lazy component with react-router */
 const waitFor = (Tag: React.LazyExoticComponent<any>) => (props: any) => <Tag {...props} />
 
 const ClassList = lazy(() => import('./screens/ClassList/ClassList').then(module => ({ default: module.ClassList })))
+const Class = lazy(() => import('./screens/Class/Class').then(module => ({ default: module.Class })))
 const Login = lazy(() => import('./screens/Login/Login').then(module => ({ default: module.Login })))
 
 const Welcome = lazy(() => import('./components/Welcome/Welcome'))
+const Spinners = lazy(() => import('./componentsJS/Elements/Spinner'))
 const Buttons = lazy(() => import('./components/Elements/Buttons'))
 const Cards = lazy(() => import('./components/Elements/Cards'))
 const TableStandard = lazy(() => import('./components/Tables/TableStandard'))
@@ -72,7 +72,7 @@ const Routes = ({ location }: RouteProps) => {
   const animationName = 'rag-fadeIn'
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated === undefined) {
       const authToken = localStorage.getItem('auth-token')
 
       if (authToken) {
@@ -112,9 +112,11 @@ const Routes = ({ location }: RouteProps) => {
                 <Switch location={location}>
                   {!isAuthenticated && <Redirect to={'/login'} />}
 
+                  <Route path="/classes/:id" component={waitFor(Class)} />
                   <Route path="/classes" component={waitFor(ClassList)} />
 
                   <Route path="/welcome" component={waitFor(Welcome)} />
+                  <Route path="/spinners" component={waitFor(Spinners)} />
                   <Route path="/buttons" component={waitFor(Buttons)} />
                   <Route path="/cards" component={waitFor(Cards)} />
                   <Route path="/table-standard" component={waitFor(TableStandard)} />

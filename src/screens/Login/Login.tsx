@@ -1,6 +1,5 @@
-import React, { Component, useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Input, CustomInput } from 'reactstrap'
+import React, { useCallback, useState } from 'react'
+import { Input } from 'reactstrap'
 import { useStore } from '../../shared/hooks/useStore'
 
 export interface LoginProps {}
@@ -27,10 +26,8 @@ export const Login = (props: LoginProps) => {
   return (
     <div className="block-center mt-4 wd-xl">
       <div className="card card-flat">
-        <div className="card-header text-center bg-dark">
-          <a href="">
-            <img className="block-center rounded" src="img/logo.png" alt="Logo" />
-          </a>
+        <div className="card-header text-center bg-dark text-white">
+            StudentManager
         </div>
         <div className="card-body">
           <p className="text-center py-2">SIGN IN TO CONTINUE.</p>

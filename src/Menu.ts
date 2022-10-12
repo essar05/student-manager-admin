@@ -15,8 +15,8 @@ export interface ISidebarMenu extends Array<ISidebarMenuItem> {}
 
 const Menu: ISidebarMenu = [
   {
-    name: 'Classes',
-    path: 'classes',
+    name: 'Clase',
+    path: '/classes',
     icon: 'icon-grid',
   },
 
@@ -27,39 +27,43 @@ const Menu: ISidebarMenu = [
     submenu: [
       {
         name: 'Welcome',
-        path: 'welcome',
+        path: '/welcome',
       },
       {
         name: 'Buttons',
-        path: 'buttons',
+        path: '/buttons',
       },
       {
         name: 'Forms',
-        path: 'form-standard',
+        path: '/form-standard',
+      },
+      {
+        name: 'Spinners',
+        path: '/spinners',
       },
       {
         name: 'Tables',
-        path: 'table-standard',
+        path: '/table-standard',
       },
       {
         name: 'Cards',
-        path: 'cards',
+        path: '/cards',
       },
       {
         name: 'Forum',
-        path: 'forum',
+        path: '/forum',
       },
       {
         name: 'Blog',
-        path: 'blog',
+        path: '/blog',
       },
       {
         name: 'Charts',
-        path: 'charts',
+        path: '/charts',
       },
       {
         name: 'Dashboard',
-        path: 'dashboard',
+        path: '/dashboard',
       },
       {
         name: 'Login',
