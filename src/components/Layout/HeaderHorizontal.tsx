@@ -16,7 +16,6 @@ import {
     NavbarToggler
 } from 'reactstrap';
 
-import ToggleFullscreen from '../Common/ToggleFullscreen';
 import HeaderSearch from './HeaderSearch';
 
 import Menu, { ISidebarMenuItem } from '../../Menu';
@@ -124,7 +123,7 @@ class HeaderHorizontal extends Component<HeaderHorizontalProps> {
                             </NavItem>
                             {/* Fullscreen (only desktops) */}
                             <NavItem className="d-none d-md-block">
-                                <ToggleFullscreen className="nav-link" />
+
                             </NavItem>
                             {/* START Alert menu */}
                             <UncontrolledDropdown nav inNavbar className="dropdown-list">
