@@ -15,7 +15,7 @@ interface LinkButtonProps {
 
 export const LinkButton = memo(({ className, to, children, icon, type = 'btn-primary' }: LinkButtonProps) => {
   return (
-    <Link to={to} className={classNames('btn btn-xs', { 'btn-labeled': !!icon }, type, className)} replace>
+    <Link to={to} className={classNames('btn btn-xs', { 'btn-labeled': !!icon }, type, className)} replace={false}>
       {icon && (
         <span className="btn-label">
           <i className={icon} />

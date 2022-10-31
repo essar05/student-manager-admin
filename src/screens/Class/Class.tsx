@@ -1,48 +1,84 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Row, Col, CardHeader, CardBody, Table, Card } from 'reactstrap'
 import ContentWrapper from '../../components/Layout/ContentWrapper'
 import { useStore } from '../../shared/hooks/useStore'
 import { TableCell, TableHeader } from './Class.styles'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { RouteComponentProps } from 'react-router'
-import { Button } from '../../components/Button'
 import { CardSpinner } from '../../components/CardSpinner'
+import { Header } from './Header/Header'
+import { StudentRow } from './StudentRow/StudentRow'
+import { AddStudentCard } from './AddStudentCard/AddStudentCard'
+import { ActivityScoreModal } from './ActivityScoreModal/ActivityScoreModal'
+import { InitialTestScoreModal } from './InitialTestScoreModal/InitialTestScoreModal'
+import { EditStudentCard } from './EditStudentCard/EditStudentCard'
 
 interface ClassProps
   extends RouteComponentProps<{
     id: string
   }> {}
 
+enum CrudState {
+  None = 'NONE',
+  Add = 'ADD',
+  Update = 'UPDATE',
+  AddActivityScore = 'ADD_ACTIVITY_SCORE',
+  UpdateInitialTestScore = 'UPDATE_INITIAL_TEST_SCORE',
+}
+
 export const Class = withRouter(
   memo(({ match }: ClassProps) => {
+    const addStudentCardRef = useRef<HTMLDivElement | null>(null)
+    const editStudentCardRef = useRef<HTMLDivElement | null>(null)
+
     const id = parseInt(match.params.id)
 
     const class_ = useStore(state => state.classes[id] || undefined)
     const fetchById = useStore(state => state.fetchById)
-    const addStudentToClass = useStore(state => state.addStudentToClass)
-    const deleteStudentFromClass = useStore(state => state.deleteStudentFromClass)
     const isLoading = useStore(state => state.isLoading)
+
+    const [crudState, setCrudState] = useState<CrudState>(CrudState.None)
+    const [selectedStudentPerformanceId, setSelectedStudentPerformanceId] = useState<number | undefined>()
 
     const studentsToClass = class_?.studentsPerformance
 
-    const [addStudentForm, setAddStudentForm] = useState({ firstName: '', lastName: '' })
-
-    const handleAddStudent = useCallback(() => {
-      if (addStudentForm.firstName && addStudentForm.lastName) {
-        addStudentToClass(id, addStudentForm.firstName, addStudentForm.lastName)
-
-        setAddStudentForm({ firstName: '', lastName: '' })
-      }
-    }, [addStudentToClass, addStudentForm, id])
-
-    const handleDeleteStudent = useCallback(
+    const handleAddActivityScore = useCallback(
       (studentToClassId: number) => () => {
-        if (window.confirm('Acest elev si toate datele corespunzatoare lui vor fi sterse. Esti sigur ca vrei sa continui ?')) {
-          deleteStudentFromClass(id, studentToClassId)
-        }
+        setCrudState(CrudState.AddActivityScore)
+        setSelectedStudentPerformanceId(studentToClassId)
       },
-      [deleteStudentFromClass, id]
+      []
     )
+
+    const handleUpdatingInitialTestScore = useCallback(
+      (studentToClassId: number) => () => {
+        setCrudState(CrudState.UpdateInitialTestScore)
+        setSelectedStudentPerformanceId(studentToClassId)
+      },
+      []
+    )
+
+    const selectedStudentPerformance = useMemo(
+      () => studentsToClass?.find(stc => stc.id === selectedStudentPerformanceId),
+      [selectedStudentPerformanceId, studentsToClass]
+    )
+
+    const handleUpdatingStudent = useCallback(
+      (studentToClassId: number) => () => {
+        setCrudState(CrudState.Update)
+        setSelectedStudentPerformanceId(studentToClassId)
+      },
+      []
+    )
+
+    useLayoutEffect(() => {
+      if (crudState === CrudState.Update) {
+        editStudentCardRef.current?.scrollIntoView()
+      }
+      if (crudState === CrudState.Add) {
+        addStudentCardRef.current?.scrollIntoView()
+      }
+    }, [crudState, selectedStudentPerformanceId])
 
     useEffect(() => {
       if (id) {
@@ -52,29 +88,7 @@ export const Class = withRouter(
 
     return (
       <ContentWrapper>
-        <div className="content-heading d-flex">
-          <div className="pr-3">
-            <Link to="/classes">
-              <i className="fas fa-arrow-left"></i>
-            </Link>
-          </div>
-          <div>
-            <div>
-              {class_?.schoolYear}
-              {class_?.label}
-            </div>
-
-            <ol className="breadcrumb breadcrumb px-0 pb-0">
-              <li className="breadcrumb-item">
-                <Link to="/classes">Clase</Link>
-              </li>
-              <li className="breadcrumb-item active">
-                {class_?.schoolYear}
-                {class_?.label}
-              </li>
-            </ol>
-          </div>
-        </div>
+        <Header class_={class_} onAddStudent={() => setCrudState(CrudState.Add)} />
 
         <Row>
           <Col xs={12}>
@@ -88,38 +102,37 @@ export const Class = withRouter(
                   <thead>
                     <tr>
                       <TableHeader $min>#</TableHeader>
-                      <TableHeader $min>Nume</TableHeader>
-                      <TableHeader>Prenume</TableHeader>
-                      <TableHeader $min></TableHeader>
+                      <TableHeader>Nume</TableHeader>
+                      <TableHeader $min>Activitate</TableHeader>
+                      <TableHeader $min>Nota activitate</TableHeader>
+                      <TableHeader $min>Nota initiala</TableHeader>
+                      <TableHeader $min>Puncte</TableHeader>
+                      <TableHeader $min>Teme nefacute</TableHeader>
+                      <TableHeader $min>Puncte zgomot</TableHeader>
+                      <TableHeader $min />
                     </tr>
                   </thead>
 
                   <tbody>
                     {!studentsToClass?.length && (
                       <tr>
-                        <TableCell colSpan={4}>
+                        <TableCell colSpan={5}>
                           <div className="text-center bg-light-gray">Niciun elev adaugat</div>
                         </TableCell>
                       </tr>
                     )}
 
-                    {studentsToClass?.map(studentPerformance => {
+                    {studentsToClass?.map((studentPerformance, index) => {
                       return (
-                        <tr key={studentPerformance.id}>
-                          <TableCell $min>{studentPerformance.student.id}</TableCell>
-                          <TableCell $min>{studentPerformance.student.lastName}</TableCell>
-                          <TableCell>{studentPerformance.student.firstName}</TableCell>
-                          <TableCell $min>
-                            <Button
-                              onClick={handleDeleteStudent(studentPerformance.id)}
-                              type={'btn-danger'}
-                              size={'xs'}
-                              icon={'fas fa-times-circle'}
-                            >
-                              Sterge
-                            </Button>
-                          </TableCell>
-                        </tr>
+                        <StudentRow
+                          key={studentPerformance.id}
+                          classId={id}
+                          studentPerformance={studentPerformance}
+                          index={index}
+                          onAddActivityScore={handleAddActivityScore}
+                          onUpdateInitialTestScore={handleUpdatingInitialTestScore}
+                          onUpdateStudent={handleUpdatingStudent}
+                        />
                       )
                     })}
                   </tbody>
@@ -130,47 +143,30 @@ export const Class = withRouter(
           </Col>
         </Row>
 
-        <Row>
-          <Col xs={12}>
-            <Card className="card-default">
-              <CardHeader className="border-bottom">Adauga elev</CardHeader>
-              <CardBody className="position-relative">
-                <CardSpinner isSpinning={isLoading} />
+        {crudState === CrudState.Update && (
+          <EditStudentCard
+            ref={editStudentCardRef}
+            classId={id}
+            studentPerformance={selectedStudentPerformance}
+            onDismiss={() => setCrudState(CrudState.None)}
+          />
+        )}
 
-                <form>
-                  <div className="form-group">
-                    <label>Nume</label>
-                    <input
-                      placeholder="Nume"
-                      type="text"
-                      className="form-control"
-                      value={addStudentForm.lastName}
-                      onChange={event => {
-                        setAddStudentForm(form => ({ ...form, lastName: event.target.value }))
-                      }}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Prenume</label>
-                    <input
-                      placeholder="Prenume"
-                      type="text"
-                      className="form-control"
-                      value={addStudentForm.firstName}
-                      onChange={event => {
-                        setAddStudentForm(form => ({ ...form, firstName: event.target.value }))
-                      }}
-                    />
-                  </div>
+        {crudState === CrudState.Add && (
+          <AddStudentCard ref={addStudentCardRef} classId={id} onDismiss={() => setCrudState(CrudState.None)} />
+        )}
 
-                  <Button size={'sm'} type={"btn-primary"} disabled={!addStudentForm.firstName || !addStudentForm.lastName} onClick={handleAddStudent}>
-                    Adauga elev
-                  </Button>
-                </form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <ActivityScoreModal
+          isOpen={crudState === CrudState.AddActivityScore}
+          studentPerformance={selectedStudentPerformance}
+          onDismiss={() => setCrudState(CrudState.None)}
+        />
+
+        <InitialTestScoreModal
+          isOpen={crudState === CrudState.UpdateInitialTestScore}
+          studentPerformance={selectedStudentPerformance}
+          onDismiss={() => setCrudState(CrudState.None)}
+        />
       </ContentWrapper>
     )
   })

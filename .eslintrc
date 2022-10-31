@@ -19,7 +19,7 @@
     "import/no-anonymous-default-export": "off",
     "react/no-unescaped-entities": "off",
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "warn",
+    "react/prop-types": "off",
     "react/no-children-prop": "off",
     "react/jsx-key": "warn",
     "react/display-name": "off",

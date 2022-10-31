@@ -14,6 +14,7 @@ interface ClassListProps extends RouteComponentProps {}
 export const ClassList = withRouter(
   memo(({ location }: ClassListProps) => {
     const classes = useStore(state => state.classes)
+    const classesOrder = useStore(state => state.classesOrder)
     const fetch = useStore(state => state.fetch)
     const addClass = useStore(state => state.addClass)
     const deleteClass = useStore(state => state.deleteClass)
@@ -83,7 +84,7 @@ export const ClassList = withRouter(
                   </thead>
 
                   <tbody>
-                    {Object.keys(classes).length === 0 && (
+                    {classesOrder.length === 0 && (
                       <tr>
                         <TableCell colSpan={4}>
                           <div className="text-center bg-light-gray">Nicio clasa adaugata</div>
@@ -91,12 +92,12 @@ export const ClassList = withRouter(
                       </tr>
                     )}
 
-                    {Object.keys(classes).map(id => {
-                      const class_ = classes[parseInt(id)]
+                    {classesOrder.map((id, index) => {
+                      const class_ = classes[id]
 
                       return (
                         <tr key={class_.id}>
-                          <TableCell $min>{class_.id}</TableCell>
+                          <TableCell $min>{index + 1}</TableCell>
                           <TableCell $min>
                             {class_.schoolYear}
                             {class_.label}
